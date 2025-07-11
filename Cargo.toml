@@ -3,5 +3,11 @@ name = "qiskit-rs"
 version = "0.1.0"
 edition = "2024"
 
+[lib]
+name = "qiskit_rs"
+path = "src/lib.rs"
+test = true
+doctest = false
+
 [build-dependencies]
 bindgen = "0.72.0"
