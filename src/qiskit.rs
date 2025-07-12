@@ -24,6 +24,9 @@ impl QuantumCircuit {
     pub fn measure(&mut self, qubit: u32, clbit: u32) {
         unsafe { qk_circuit_measure(self.circuit, qubit, clbit) };
     }
+}
+
+impl Drop for QuantumCircuit {
     fn drop(&mut self) {
         println!("Freeing quantum circuit!");
         unsafe { qk_circuit_free(self.circuit) };
