@@ -1,6 +1,3 @@
-use std::env;
-use std::path::PathBuf;
-
 fn main() {
     let curr_dir = std::env::var("CARGO_MANIFEST_DIR").unwrap();
     println!("cargo:rustc-env=LD_LIBRARY_PATH={curr_dir}/qiskit_c_lib/dist/c/lib");
@@ -13,8 +10,7 @@ fn main() {
         .generate()
         .expect("Unable to generate bindings");
 
-    let out_path = PathBuf::from(env::var("OUT_DIR").unwrap());
     bindings
-        .write_to_file(out_path.join("bindings.rs"))
+        .write_to_file("src/qiskit_ffi.rs")
         .expect("Couldn't write bindings!");
 }
