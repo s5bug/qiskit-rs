@@ -6,5 +6,9 @@
 mod qiskit_ffi;
 pub mod qiskit;
 
-pub use qiskit::{QuantumCircuit,QuantumRegister,ClassicalRegister};
-
+pub use qiskit::{
+    QuantumCircuit,
+    QuantumRegister,
+    ClassicalRegister,
+    QiskitError,
+};
