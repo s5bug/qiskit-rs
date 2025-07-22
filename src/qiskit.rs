@@ -2,8 +2,6 @@ use crate::qiskit_ffi;
 use crate::qiskit_ffi::{qk_circuit_gate,QkExitCode};
 use std::ffi::CString;
 
-extern crate num;
-
 #[derive(PartialEq, Eq, Debug)]
 pub enum QiskitError {
     Success,
