@@ -22,61 +22,11 @@ fn main() {
 
     println!("Generating dynamically linked qiskit libraries");
 
-    let output = Command::new("make")
+    let _ = Command::new("make")
         .current_dir(repo_dir)
         .arg("c")
         .output()
         .unwrap();
-
-    io::stdout().write_all(&output.stdout).unwrap();
-    io::stderr().write_all(&output.stderr).unwrap();
-
-    // let output = Command::new("cargo")
-    //     .current_dir(repo_dir)
-    //     .arg("rustc")
-    //     .arg("--release")
-    //     .arg("--crate-type")
-    //     .arg("cdylib")
-    //     .arg("-p")
-    //     .arg("qiskit-cext")
-    //     .args(["--target-dir", &format!("{}/different_target", env!("CARGO_MANIFEST_DIR"))])
-    //     .output()
-    //     .unwrap();
-    // 
-    // let _ = Command::new("mkdir")
-    //     .current_dir(repo_dir)
-    //     .arg("-p")
-    //     .arg("dist/c/lib")
-    //     .output()
-    //     .unwrap();
-
-    // let _ = Command::new("mkdir")
-    //     .current_dir(repo_dir)
-    //     .arg("-p")
-    //     .arg("dist/c/include/qiskit")
-    //     .output()
-    //     .unwrap();
-
-    // let _ = Command::new("cp")
-    //     .current_dir(repo_dir)
-    //     .arg("target/release/*")
-    //     .arg("dist/c/lib")
-    //     .output()
-    //     .unwrap();
-
-    // let _ = Command::new("cp")
-    //     .current_dir(repo_dir)
-    //     .arg("target/qiskit.h")
-    //     .arg("dist/c/lib/qiskit.h")
-    //     .output()
-    //     .unwrap();
-
-    // let _ = Command::new("cp")
-    //     .current_dir(repo_dir)
-    //     .arg("crates/cext/include/complex.h")
-    //     .arg("dist/c/include/qiskit/complex.h")
-    //     .output()
-    //     .unwrap();
 
     println!("Dynamically linked libraries generated at {}", repo_dir_str); 
 
