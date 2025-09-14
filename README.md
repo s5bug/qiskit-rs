@@ -18,3 +18,24 @@ built in to qiskit-rs:
     Set envvar `QISKIT_CEXT_PATH` to the path of the qiskit source directory
 - Clone (no path specified): Automatically clones and builds the qiskit c api from source. 
     Set envvar `QISKIT_CEXT_CLONE=1` to use the clone method. WARNING, cloning and building from source is very slow.
+
+
+## Getting Started
+
+Create a simple GHZ state circuit with qiskit-rs:
+
+```
+use qiskit_rs::QuantumCircuit;
+
+fn main() {
+    let num_qubits = 10;
+    let mut qc = QuantumCircuit::new(num_qubits, num_qubits);
+    qc.h(0);
+    for i in 0..(num_qubits - 1) {
+        qc.cx(i, i + 1);
+    }
+    for i in 0..num_qubits {
+        qc.measure(i, i);
+    }
+}
+```
