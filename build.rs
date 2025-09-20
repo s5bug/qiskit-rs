@@ -8,6 +8,15 @@ enum InstallMethod {
     PATH(String)
 }
 
+#[derive(Debug)]
+struct CargoCallbacks;
+
+impl bindgen::callbacks::ParseCallbacks for CargoCallbacks{
+    fn process_comment(&self, comment: &str) -> Option<String> {
+        Some(format!("````ignore\n{}\n````", comment))
+    }
+}
+
 // There are two installation methods:
 // - Path (Manually specified path): Uses qiskit c api binary or source from a path
 //     export QISKIT_CEXT_INSTALL_METHOD="path"
@@ -90,7 +99,7 @@ fn build_qiskit_from_source() {
     let bindings = bindgen::Builder::default()
         .header(format!("{}/dist/c/include/qiskit.h", repo_dir_str))
         .header(format!("{}/dist/c/include/qiskit/complex.h", repo_dir_str))
-        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
+        .parse_callbacks(Box::new(CargoCallbacks))
         .generate()
         .expect("Unable to generate bindings");
 
@@ -120,7 +129,7 @@ fn build_qiskit_from_path(qiskit_path_str: String) {
     let bindings = bindgen::Builder::default()
         .header(format!("{}/dist/c/include/qiskit.h", qiskit_path_str))
         .header(format!("{}/dist/c/include/qiskit/complex.h", qiskit_path_str))
-        .parse_callbacks(Box::new(bindgen::CargoCallbacks::new()))
+        .parse_callbacks(Box::new(CargoCallbacks))
         .generate()
         .expect("Unable to generate bindings");
 
@@ -128,7 +137,6 @@ fn build_qiskit_from_path(qiskit_path_str: String) {
         .write_to_file("src/qiskit_ffi.rs")
         .expect("Couldn't write bindings!");
 }
-
 
 fn main() { 
     println!("cargo:rerun-if-changed=build.rs");
