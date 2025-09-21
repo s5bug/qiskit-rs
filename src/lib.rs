@@ -1,27 +1,31 @@
-//! Qiskit bindings for Rust
+//! # Qiskit bindings for Rust
 //!
 //! This library exposes the C API for Qiskit in Rust.
 //!
 //!
-//! ## Building
+//! ## Installation
 //!
 //! The Qiskit C API needs to be installed to use qiskit-rs. There are two 
 //! supported installation methods that can be specified:
 //! 
-//! ##### Path (Manually specified path): Uses qiskit c api binary or source from a path
+//! #### Path
+//!
+//! Uses qiskit c api binary or pre-installed source directory from a path.
+//! 
 //! ```bash
 //! export QISKIT_CEXT_INSTALL_METHOD="path"
 //! export QISKIT_CEXT_PATH="<path/to/qiskit-cext-dir>"
 //! ```
 //!
-//! ##### Clone (no path specified): Automatically clones and builds the qiskit c api from source
+//! #### Clone
+//!
+//! Automatically clones and builds the qiskit c api from source.
 //!       
-//! WARNING, cloning and building from source is very slow.
+//! <div class="warning">Cloning and building from source is very slow!</div>
+//!
 //! ```bash
 //! export QISKIT_CEXT_INSTALL_METHOD="clone"
 //! ``` 
-//!
-//! 
 //!
 //! ## Creating a Circuit
 //!
@@ -43,6 +47,9 @@
 //!     qc.measure(1, 1);
 //! }
 //! ```
+
+
+#![warn(missing_docs)]
 
 
 #![allow(non_snake_case)]
