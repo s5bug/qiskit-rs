@@ -17,26 +17,8 @@
 //!
 //! ## Installation
 //!
-//! The Qiskit C API needs to be installed to use qiskit-rs. There are two
-//! supported installation methods that can be specified:
-//!
-//! #### Path
-//!
-//! Uses qiskit c api binary or pre-installed source directory from a path.
-//!
 //! ```bash
-//! export QISKIT_CEXT_INSTALL_METHOD="path"
-//! export QISKIT_CEXT_PATH="<path/to/qiskit-cext-dir>"
-//! ```
-//!
-//! #### Clone
-//!
-//! Automatically clones and builds the qiskit c api from source.
-//!       
-//! <div class="warning">Cloning and building from source is very slow!</div>
-//!
-//! ```bash
-//! export QISKIT_CEXT_INSTALL_METHOD="clone"
+//! cargo add --git https://github.com/Qiskit/qiskit-rs qiskit
 //! ```
 //!
 //! ## Creating a Circuit
@@ -57,6 +39,31 @@
 //! qc.measure(0, 0);
 //! qc.measure(1, 1);
 //! ```
+//!
+//! ## Advanced Installation
+//!
+//! //! The Qiskit C API needs to be installed to use qiskit-rs. By default,
+//! qiskit-rs uses the "clone" method.
+//!
+//! #### Clone
+//!
+//! Automatically clones and builds the qiskit c api from source.
+//!       
+//! <div class="warning">Cloning and building from source is very slow!</div>
+//!
+//! ```bash
+//! export QISKIT_CEXT_INSTALL_METHOD="clone"
+//! ```
+//!
+//! #### Path
+//!
+//! Uses qiskit c api binary or pre-installed source directory from a path.
+//!
+//! ```bash
+//! export QISKIT_CEXT_INSTALL_METHOD="path"
+//! export QISKIT_CEXT_PATH="<path/to/qiskit-cext-dir>"
+//! ```
+//!
 
 #![warn(missing_docs)]
 pub mod qiskit;

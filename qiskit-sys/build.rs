@@ -29,25 +29,23 @@ impl bindgen::callbacks::ParseCallbacks for CargoCallbacks {
 }
 
 // There are two installation methods:
-// - Path (Manually specified path): Uses qiskit c api binary or source from a path
-//     export QISKIT_CEXT_INSTALL_METHOD="path"
-//     export QISKIT_CEXT_PATH="path/to/qiskit-cext-dir"
 // - Clone (no path specified): Automatically clones and builds the qiskit c api from source
 //     Set envvar export QISKIT_CEXT_INSTALL_METHOD="clone" to use the clone method. WARNING, cloning and building from
 //     source is very slow.
+// - Path (Manually specified path): Uses qiskit c api binary or source from a path
+//     export QISKIT_CEXT_INSTALL_METHOD="path"
+//     export QISKIT_CEXT_PATH="path/to/qiskit-cext-dir"
 fn check_installation_method() -> InstallMethod {
     let qiskit_cext_path = env::var("QISKIT_CEXT_PATH");
     match env::var("QISKIT_CEXT_INSTALL_METHOD") {
         Ok(val) => match val.as_str() {
             "path" => InstallMethod::Path(qiskit_cext_path.expect("QISKIT_CEXT_PATH is unset")),
             "clone" => InstallMethod::Clone,
-            _ => InstallMethod::Path(qiskit_cext_path.expect("QISKIT_CEXT_PATH is unset")),
+            _ => InstallMethod::Clone,
         },
         Err(e) => match e {
             env::VarError::NotPresent => {
-                panic!(
-                    "Please provide an installation method with the envvar QISKIT_CEXT_INSTALL_METHOD (path, clone)"
-                )
+                InstallMethod::Clone
             }
             env::VarError::NotUnicode(_) => {
                 panic!("Envvar QISKIT_CEXT_INSTALL_METHOD is not unicode")
@@ -59,30 +57,12 @@ fn check_installation_method() -> InstallMethod {
 fn clone_qiskit(source_path: &Path) {
     let url = "https://github.com/Qiskit/qiskit.git";
     match git2::Repository::clone(url, source_path) {
-        Ok(repo) => {
+        Ok(_repo) => {
             println!("Repository successfully cloned");
-            let refname = env!("CARGO_PKG_VERSION");
-            if !refname.contains("dev") {
-                let (obj, _) = repo
-                    .revparse_ext(refname)
-                    .unwrap_or_else(|_| panic!("{} not found in repo", refname));
-                repo.checkout_tree(&obj, None)
-                    .unwrap_or_else(|_| panic!("failed to checkout {}", refname));
-            }
         }
         Err(e) => match e.code() {
             git2::ErrorCode::Exists => {
                 println!("Repository already exists");
-                let refname = env!("CARGO_PKG_VERSION");
-                if !refname.contains("dev") {
-                    let repo = git2::Repository::open(source_path)
-                        .unwrap_or_else(|_| panic!("Invalid repo at {:?}", source_path));
-                    let (obj, _) = repo
-                        .revparse_ext(refname)
-                        .unwrap_or_else(|_| panic!("{} not found in repo", refname));
-                    repo.checkout_tree(&obj, None)
-                        .unwrap_or_else(|_| panic!("failed to checkout {}", refname));
-                }
             }
             _ => panic!("Git clone failed: {e:?}"),
         },
