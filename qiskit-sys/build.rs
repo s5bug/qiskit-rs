@@ -57,12 +57,30 @@ fn check_installation_method() -> InstallMethod {
 fn clone_qiskit(source_path: &Path) {
     let url = "https://github.com/Qiskit/qiskit.git";
     match git2::Repository::clone(url, source_path) {
-        Ok(_repo) => {
+        Ok(repo) => {
             println!("Repository successfully cloned");
+            let refname = env!("CARGO_PKG_VERSION");
+            if !refname.contains("dev") {
+                let (obj, _) = repo
+                    .revparse_ext(refname)
+                    .unwrap_or_else(|_| panic!("{} not found in repo", refname));
+                repo.checkout_tree(&obj, None)
+                    .unwrap_or_else(|_| panic!("failed to checkout {}", refname));
+            }
         }
         Err(e) => match e.code() {
             git2::ErrorCode::Exists => {
                 println!("Repository already exists");
+                let refname = env!("CARGO_PKG_VERSION");
+                if !refname.contains("dev") {
+                    let repo = git2::Repository::open(source_path)
+                        .unwrap_or_else(|_| panic!("Invalid repo at {:?}", source_path));
+                    let (obj, _) = repo
+                        .revparse_ext(refname)
+                        .unwrap_or_else(|_| panic!("{} not found in repo", refname));
+                    repo.checkout_tree(&obj, None)
+                        .unwrap_or_else(|_| panic!("failed to checkout {}", refname));
+                }
             }
             _ => panic!("Git clone failed: {e:?}"),
         },
