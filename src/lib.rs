@@ -64,7 +64,7 @@
 //! ```
 //!
 //! ## License
-//! 
+//!
 //! [Apache License 2.0](https://github.com/Qiskit/qiskit/blob/main/LICENSE.txt)
 
 #![warn(missing_docs)]

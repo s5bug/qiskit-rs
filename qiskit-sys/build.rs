@@ -41,12 +41,13 @@ fn check_installation_method() -> InstallMethod {
         Ok(val) => match val.as_str() {
             "path" => InstallMethod::Path(qiskit_cext_path.expect("QISKIT_CEXT_PATH is unset")),
             "clone" => InstallMethod::Clone,
-            _ => panic!("\"{}\" is not a valid input to QISKIT_CEXT_INSTALL_METHOD, please specify one of the following options: (\"path\", \"clone\")", val),
+            _ => panic!(
+                "\"{}\" is not a valid input to QISKIT_CEXT_INSTALL_METHOD, please specify one of the following options: (\"path\", \"clone\")",
+                val
+            ),
         },
         Err(e) => match e {
-            env::VarError::NotPresent => {
-                InstallMethod::Clone
-            }
+            env::VarError::NotPresent => InstallMethod::Clone,
             env::VarError::NotUnicode(_) => {
                 panic!("Envvar QISKIT_CEXT_INSTALL_METHOD is not unicode")
             }

@@ -10,7 +10,6 @@
 // copyright notice, and modified files need to carry a notice indicating
 // that they have been altered from the originals.
 
-
 use qiskit_sys::qk_circuit_gate;
 use std::ffi::{CStr, CString};
 
